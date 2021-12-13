@@ -11,6 +11,7 @@ export default function FilmList({ films }) {
         >
           <div className="content">
             <h1>{film[0]}</h1>
+            <h1>FILMS</h1>
             <p>
               {`${film[0]} totaled $${film[2]}M at the box office and had ${film[3]} Academy Award nominations`}
             </p>
