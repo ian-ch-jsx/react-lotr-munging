@@ -15,29 +15,39 @@ function App() {
   }, []);
 
   const getFilms = async () => {
-    const resp = await fetch('https://the-one-api.dev/v2/movie/', {
+    const resp = await fetch(`${process.env.REACT_APP_SUPABASE_URL}/rest/v1/films`, {
       headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+        apikey: process.env.REACT_APP_SUPABASE_KEY,
+        Authorization: `Bearer ${process.env.REACT_APP_SUPABASE_KEY}`,
       },
     });
     const data = await resp.json();
-    const filmList = data.docs;
+    const filmList = data;
 
     const filmArray = filmList.map((film) => {
-      return [film.name, film.name, film.boxOfficeRevenueInMillions, film.academyAwardNominations];
+      return [
+        film.title,
+        film.title.replace(/\s+/g, '-').toLowerCase(),
+        film.box_office_total,
+        film.academy_award_nominations,
+      ];
     });
     setFilms(filmArray);
     return [];
   };
 
   const getCharacters = async () => {
-    const resp = await fetch('https://the-one-api.dev/v2/character/', {
+    const resp = await fetch(`${process.env.REACT_APP_SUPABASE_URL}/rest/v1/characters`, {
       headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+        apikey: process.env.REACT_APP_SUPABASE_KEY,
+        Authorization: `Bearer ${process.env.REACT_APP_SUPABASE_KEY}`,
       },
     });
     const data = await resp.json();
-
+    const charArray = data.map((c) => {
+      return { name: c.name, dates: c.birth + ' - ' + c.death };
+    });
+    setCharacters(charArray);
     return [];
   };
 
@@ -55,6 +65,9 @@ function App() {
         <Switch>
           <Route path="/films">
             <FilmList films={films}></FilmList>
+          </Route>
+          <Route path="/characters">
+            <CharacterList characters={characters} />
           </Route>
         </Switch>
       </BrowserRouter>
