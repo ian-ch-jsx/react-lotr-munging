@@ -45,7 +45,7 @@ function App() {
     });
     const data = await resp.json();
     const charArray = data.map((c) => {
-      return { name: c.name, dates: c.birth + ' - ' + c.death };
+      return { name: c.name, dates: c.birth + ' - ' + c.death + '.' };
     });
     setCharacters(charArray);
     return [];
